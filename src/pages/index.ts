@@ -1,2 +1,2 @@
 export * from './files-page';
-export * from './home-page';
+export * from './canvas-page';

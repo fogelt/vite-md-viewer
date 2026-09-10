@@ -1,13 +1,13 @@
 import { createBrowserRouter } from 'react-router';
 import { App } from '@/app/app';
-import { HomePage, FilesPage } from '@/pages';
+import { CanvasPage, FilesPage } from '@/pages';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <CanvasPage /> },
       { path: 'files', element: <FilesPage /> },
     ],
   },
