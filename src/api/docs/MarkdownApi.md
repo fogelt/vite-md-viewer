@@ -14,7 +14,7 @@ All URIs are relative to *http://localhost*
 
 ## apiMarkdownAllFilesGet
 
-> apiMarkdownAllFilesGet()
+> Array&lt;string&gt; apiMarkdownAllFilesGet()
 
 
 
@@ -49,7 +49,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-`void` (Empty response body)
+**Array<string>**
 
 ### Authorization
 
@@ -58,7 +58,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: `text/plain`, `application/json`, `text/json`
 
 
 ### HTTP response details

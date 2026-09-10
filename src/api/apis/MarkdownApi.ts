@@ -72,17 +72,18 @@ export class MarkdownApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiMarkdownAllFilesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async apiMarkdownAllFilesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
         const requestOptions = await this.apiMarkdownAllFilesGetRequestOpts();
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      */
-    async apiMarkdownAllFilesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiMarkdownAllFilesGetRaw(initOverrides);
+    async apiMarkdownAllFilesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<string>> {
+        const response = await this.apiMarkdownAllFilesGetRaw(initOverrides);
+        return await response.value();
     }
 
     /**
