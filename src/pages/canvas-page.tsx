@@ -1,5 +1,5 @@
 import { ToolBar, Canvas } from "@/components/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { markdownApi } from "@/api/client";
 
@@ -34,13 +34,11 @@ export const CanvasPage = () => {
         });
 
         if (fileName) {
-          // Existing file
           await markdownApi.apiMarkdownFileNamePutRaw({
             fileName,
             file,
           });
         } else {
-          // New file
           await markdownApi.apiMarkdownUploadPostRaw({
             file,
           });
@@ -57,10 +55,43 @@ export const CanvasPage = () => {
     return () => clearTimeout(timeout);
   }, [content, fileName, hasEdited]);
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const format = (before: string, after = "") => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    const selected = content.slice(start, end);
+
+    const nextContent =
+      content.slice(0, start) +
+      before +
+      selected +
+      after +
+      content.slice(end);
+
+    setContent(nextContent);
+    setSaved(false);
+    setHasEdited(true);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+
+      const cursorStart = start + before.length;
+      const cursorEnd = cursorStart + selected.length;
+
+      textarea.setSelectionRange(cursorStart, cursorEnd);
+    });
+  };
+
   return (
     <div className="absolute inset-0 pl-48 bg-zinc-50 flex flex-col">
       <header className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
-        <ToolBar />
+        <ToolBar onFormat={format} />
       </header>
 
       <main className="flex-1 w-full h-full pt-20 px-8 pb-8 flex">
@@ -73,6 +104,7 @@ export const CanvasPage = () => {
           }}
           fileName={fileName}
           saved={saved}
+          textareaRef={textareaRef}
         />
       </main>
     </div>
