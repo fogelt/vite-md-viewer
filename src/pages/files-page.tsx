@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { FileText, Loader2 } from "lucide-react";
-import { Configuration, MarkdownApi } from "@/api";
-
-const api = new MarkdownApi(new Configuration({ basePath: "http://localhost:8080" }));
+import { markdownApi } from "@/api/client";
 
 export const FilesPage = () => {
   const [files, setFiles] = useState<string[]>([]);
@@ -12,7 +10,7 @@ export const FilesPage = () => {
   useEffect(() => {
     async function loadFiles() {
       try {
-        const response = await api.apiMarkdownAllFilesGetRaw();
+        const response = await markdownApi.apiMarkdownAllFilesGetRaw();
         const data = await response.raw.json();
         setFiles(data);
       } catch (err: any) {

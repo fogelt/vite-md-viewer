@@ -1,4 +1,4 @@
-import { ToolBar } from "@/components/ui";
+import { ToolBar, Canvas } from "@/components/ui";
 
 export const CanvasPage = () => {
   return (
@@ -8,9 +8,7 @@ export const CanvasPage = () => {
       </header>
 
       <main className="flex-1 w-full h-full pt-20 px-8 pb-8 flex">
-        <textarea
-          className="bg-white border-zinc-200 rounded-lg w-full h-full resize-none border shadow-sm outline-none font-mono text-base leading-relaxed p-2"
-        />
+        <Canvas />
       </main>
     </div>
   );
