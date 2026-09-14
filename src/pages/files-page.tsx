@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { FileText, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { markdownApi } from "@/api/client";
+import { FileItem } from "@/components/ui";
+import { useNavigate } from "react-router";
 
 export const FilesPage = () => {
   const [files, setFiles] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadFiles() {
@@ -22,6 +25,26 @@ export const FilesPage = () => {
 
     loadFiles();
   }, []);
+
+  const handleImport = async (fileName: string) => {
+    try {
+      const response = await markdownApi.apiMarkdownFileNameGetRaw({ fileName });
+      const content = await response.raw.text();
+
+      navigate("/", { state: { importedContent: content, fileName } });
+    } catch (err: any) {
+      console.error("Failed to import file:", err);
+    }
+  };
+
+  const handleDelete = async (fileName: string) => {
+    try {
+      setFiles((prev) => prev.filter((f) => f !== fileName));
+      markdownApi.apiMarkdownFileNameDelete({ fileName })
+    } catch (err: any) {
+      console.error("Failed to delete file:", err);
+    }
+  };
 
   return (
     <div className="absolute inset-0 pl-64 bg-zinc-50 flex flex-col p-8 overflow-y-auto">
@@ -47,15 +70,12 @@ export const FilesPage = () => {
 
         <div className="grid grid-cols-1 gap-3">
           {files.map((file) => (
-            <div
+            <FileItem
               key={file}
-              className="flex items-center justify-between p-4 bg-white border border-zinc-200 rounded-lg shadow-sm hover:border-zinc-300 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <FileText className="w-5 h-5 text-zinc-400" />
-                <span className="text-sm font-medium text-zinc-800">{file}</span>
-              </div>
-            </div>
+              fileName={file}
+              onImport={handleImport}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       </div>
