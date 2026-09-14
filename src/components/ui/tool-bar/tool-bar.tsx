@@ -9,7 +9,8 @@ import {
   Code,
   Link,
   Image,
-  SquareTerminal
+  SquareTerminal,
+  Wand
 } from "lucide-react";
 
 export const ToolBar = () => {
@@ -50,6 +51,10 @@ export const ToolBar = () => {
       </button>
       <button type="button" className="p-1.5 hover:bg-zinc-100 hover:text-zinc-900 rounded transition-colors" title="Image">
         <Image className="w-4 h-4" />
+      </button>
+      <div className="w-px h-4 bg-zinc-200 mx-1" />
+      <button type="button" className="p-1.5 hover:bg-blue-300 hover:text-zinc-900 rounded transition-colors bg-blue-200 border border-dashed" title="format with AI">
+        <Wand className="w-3.5 h-3.5" />
       </button>
     </div>
   );
