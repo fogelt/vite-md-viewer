@@ -1,5 +1,6 @@
-import { ChangeEvent, RefObject } from "react";
-import { Check } from "lucide-react";
+import { ChangeEvent, RefObject, useState } from "react";
+import { Check, Columns2, Pencil } from "lucide-react";
+import { MarkdownView } from "@/components/ui";
 
 interface CanvasProps {
   value: string;
@@ -9,6 +10,9 @@ interface CanvasProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>;
 }
 
+const surface =
+  "bg-white border border-zinc-200 rounded-lg shadow-sm";
+
 export const Canvas = ({
   value,
   onChange,
@@ -16,22 +20,63 @@ export const Canvas = ({
   saved,
   textareaRef,
 }: CanvasProps) => {
-  return (
-    <div className="relative w-full h-full">
-      <div className="absolute -top-6 left-1 flex items-center gap-1.5 text-xs text-zinc-400">
-        {saved && <Check className="w-3 h-3 text-blue-400" />}
+  const [split, setSplit] = useState(false);
 
-        <span className="max-w-64 truncate">
+  return (
+    <div className="relative h-full w-full">
+      <div className="absolute -top-6 left-1 flex items-center gap-1.5 text-xs text-zinc-400">
+        {saved && <Check className="h-3 w-3 text-blue-400" />}
+
+        <span
+          className="max-w-64 truncate"
+          title={fileName ?? "Untitled"}
+        >
           {fileName ?? "Untitled"}
         </span>
       </div>
 
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={onChange}
-        className="bg-white border-zinc-200 rounded-lg w-full h-full resize-none border shadow-sm outline-none font-mono text-base leading-relaxed p-4"
-      />
+      <div className="absolute -top-7 right-1 flex gap-0.5 rounded-md bg-zinc-100 p-0.5">
+        <button
+          type="button"
+          onClick={() => setSplit(false)}
+          className={`rounded p-1 transition-colors ${!split
+            ? "bg-white text-zinc-700 shadow-sm"
+            : "text-zinc-400 hover:text-zinc-600"
+            } `}
+          title="Edit"
+        >
+          <Pencil className="h-3.5 w-3.5" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSplit(true)}
+          className={`rounded p-1 transition-colors ${split
+            ? "bg-white text-zinc-700 shadow-sm"
+            : "text-zinc-400 hover:text-zinc-600"
+            } `}
+          title="Split view"
+        >
+          <Columns2 className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
+      <div className="flex h-full w-full gap-2">
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={onChange}
+          className={`${surface} h-full resize-none p-4 font-mono text-base leading-relaxed outline-none ${split ? "w-1/2" : "w-full"
+            } `}
+        />
+
+        {split && (
+          <MarkdownView
+            content={value}
+            className={`${surface} h-full w-1/2 overflow-auto p-4`}
+          />
+        )}
+      </div>
     </div>
   );
 };
