@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**apiMarkdownAllFilesGet**](MarkdownApi.md#apimarkdownallfilesget) | **GET** /api/Markdown/allFiles |  |
+| [**apiMarkdownBeautifyPost**](MarkdownApi.md#apimarkdownbeautifypost) | **POST** /api/Markdown/beautify |  |
 | [**apiMarkdownFileNameDelete**](MarkdownApi.md#apimarkdownfilenamedelete) | **DELETE** /api/Markdown/{fileName} |  |
 | [**apiMarkdownFileNameGet**](MarkdownApi.md#apimarkdownfilenameget) | **GET** /api/Markdown/{fileName} |  |
 | [**apiMarkdownFileNamePut**](MarkdownApi.md#apimarkdownfilenameput) | **PUT** /api/Markdown/{fileName} |  |
@@ -58,6 +59,71 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: `text/plain`, `application/json`, `text/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiMarkdownBeautifyPost
+
+> string apiMarkdownBeautifyPost(body)
+
+
+
+### Example
+
+```ts
+import {
+  Configuration,
+  MarkdownApi,
+} from '';
+import type { ApiMarkdownBeautifyPostRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new MarkdownApi();
+
+  const body = {
+    // string (optional)
+    body: body_example,
+  } satisfies ApiMarkdownBeautifyPostRequest;
+
+  try {
+    const data = await api.apiMarkdownBeautifyPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **body** | `string` |  | [Optional] |
+
+### Return type
+
+**string**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`, `text/json`, `application/*+json`
 - **Accept**: `text/plain`, `application/json`, `text/json`
 
 

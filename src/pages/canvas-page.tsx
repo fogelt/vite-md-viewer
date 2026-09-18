@@ -5,6 +5,7 @@ import { markdownApi } from "@/api/client";
 
 export const CanvasPage = () => {
   const [content, setContent] = useState("");
+  const [isAssisting, setIsAssisting] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [hasEdited, setHasEdited] = useState(false);
@@ -88,10 +89,32 @@ export const CanvasPage = () => {
     });
   };
 
+  const assist = async () => {
+    if (!content.trim() || isAssisting) return;
+    setIsAssisting(true);
+
+    try {
+      const response = await markdownApi.apiMarkdownBeautifyPostRaw({
+        body: content,
+      });
+
+      const beautifiedMarkdown = await response.raw.text();
+
+      if (beautifiedMarkdown) {
+        setContent(beautifiedMarkdown);
+        setSaved(false);
+        setHasEdited(true);
+      }
+    } catch (error) {
+      console.error("Failed to beautify markdown:", error);
+    } finally {
+      setIsAssisting(false);
+    }
+  };
   return (
     <div className="absolute inset-0 pl-48 bg-zinc-50 flex flex-col">
       <header className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
-        <ToolBar onFormat={format} />
+        <ToolBar onFormat={format} onAssist={assist} isAssisting={isAssisting} />
       </header>
 
       <main className="flex-1 w-full h-full pt-20 px-8 pb-8 flex">

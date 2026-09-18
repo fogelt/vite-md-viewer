@@ -14,6 +14,13 @@
 
 import * as runtime from '../runtime';
 
+export interface ApiMarkdownBeautifyPostRequest {
+    /**
+     * 
+     */
+    body?: string;
+}
+
 export interface ApiMarkdownFileNameDeleteRequest {
     /**
      * 
@@ -83,6 +90,48 @@ export class MarkdownApi extends runtime.BaseAPI {
      */
     async apiMarkdownAllFilesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<string>> {
         const response = await this.apiMarkdownAllFilesGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for apiMarkdownBeautifyPost without sending the request
+     */
+    async apiMarkdownBeautifyPostRequestOpts(requestParameters: ApiMarkdownBeautifyPostRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/api/Markdown/beautify`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters['body'] as any,
+        };
+    }
+
+    /**
+     */
+    async apiMarkdownBeautifyPostRaw(requestParameters: ApiMarkdownBeautifyPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const requestOptions = await this.apiMarkdownBeautifyPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     */
+    async apiMarkdownBeautifyPost(requestParameters: ApiMarkdownBeautifyPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.apiMarkdownBeautifyPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

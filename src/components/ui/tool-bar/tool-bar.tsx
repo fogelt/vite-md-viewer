@@ -11,13 +11,16 @@ import {
   Image,
   SquareTerminal,
   Wand,
+  Loader2,
 } from "lucide-react";
 
 interface ToolBarProps {
   onFormat: (before: string, after?: string) => void;
+  onAssist: () => void;
+  isAssisting: boolean;
 }
 
-export const ToolBar = ({ onFormat }: ToolBarProps) => {
+export const ToolBar = ({ onFormat, onAssist, isAssisting }: ToolBarProps) => {
   return (
     <div className="bg-white shadow-sm border border-zinc-200 rounded-lg px-3 py-2 flex items-center gap-1 text-zinc-600">
       <button
@@ -129,10 +132,15 @@ export const ToolBar = ({ onFormat }: ToolBarProps) => {
 
       <button
         type="button"
-        className="p-1.5 hover:bg-blue-300 hover:text-zinc-900 rounded transition-colors bg-blue-200 border border-dashed"
+        onClick={onAssist}
+        className="p-1.5 hover:bg-blue-300 hover:text-zinc-900 rounded transition-colors bg-blue-200 border border-dashed disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         title="Format with AI"
       >
-        <Wand className="w-3.5 h-3.5" />
+        {isAssisting ? (
+          <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-700" />
+        ) : (
+          <Wand className="w-3.5 h-3.5" />
+        )}
       </button>
     </div>
   );
