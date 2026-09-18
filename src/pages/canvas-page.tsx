@@ -27,29 +27,37 @@ export const CanvasPage = () => {
     if (!hasEdited) return;
 
     const timeout = setTimeout(async () => {
-      const name = fileName ?? "untitled.md";
-
       try {
-        const file = new File([content], name, {
+        const file = new File([content], fileName || "untitled.md", {
           type: "text/markdown",
         });
 
-        if (fileName) {
+        if (!fileName) {
+          const rawRes = await markdownApi.apiMarkdownUploadPostRaw({ file });
+          const textData = await rawRes.raw.text();
+
+          let newName = "";
+          try {
+            const json = JSON.parse(textData);
+            newName = json.fileName || json.FileName;
+          } catch {
+            newName = textData;
+          }
+
+          if (newName) {
+            setFileName(newName);
+          }
+        } else {
           await markdownApi.apiMarkdownFileNamePutRaw({
             fileName,
             file,
           });
-        } else {
-          await markdownApi.apiMarkdownUploadPostRaw({
-            file,
-          });
-
-          setFileName(name);
         }
 
         setSaved(true);
+        setHasEdited(false);
       } catch (error) {
-        console.error("Failed to save:", error);
+        console.error("Save failed:", error);
       }
     }, 500);
 
