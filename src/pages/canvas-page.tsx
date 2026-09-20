@@ -121,11 +121,7 @@ export const CanvasPage = () => {
   };
   return (
     <div className="absolute inset-0 pl-48 bg-zinc-50 flex flex-col">
-      <header className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
-        <ToolBar onFormat={format} onAssist={assist} isAssisting={isAssisting} />
-      </header>
-
-      <main className="flex-1 w-full h-full pt-20 px-8 pb-8 flex">
+      <main className="flex-1 w-full h-full pt-8 px-8 pb-8 flex">
         <Canvas
           value={content}
           onChange={(e) => {
@@ -133,6 +129,9 @@ export const CanvasPage = () => {
             setSaved(false);
             setHasEdited(true);
           }}
+          onFormat={format}
+          onAssist={assist}
+          isAssisting={isAssisting}
           fileName={fileName}
           saved={saved}
           textareaRef={textareaRef}
