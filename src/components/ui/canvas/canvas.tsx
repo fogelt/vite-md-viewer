@@ -29,7 +29,7 @@ export const Canvas = ({
 
   return (
     <div className="relative h-full w-full flex flex-col">
-      <header className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+      <header className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
         <ToolBar onFormat={onFormat} onAssist={onAssist} isAssisting={isAssisting} />
       </header>
       <div className="flex h-full w-full gap-2 flex-1 min-h-0">
@@ -37,14 +37,14 @@ export const Canvas = ({
           ref={textareaRef}
           value={value}
           onChange={onChange}
-          className={`${surface} h-full resize-none p-4 pt-20 font-mono text-base leading-relaxed outline-none ${split ? "w-1/2" : "w-full"
+          className={`${surface} h-[92%] resize-none p-4 mt-12 font-mono text-base leading-relaxed outline-none ${split ? "w-1/2" : "w-full"
             }`}
         />
 
         {split && (
           <MarkdownView
             content={value}
-            className={`${surface} h-full w-1/2 pt-20 overflow-auto p-4`}
+            className={`${surface} h-[92%] w-1/2 mt-12 overflow-auto p-4`}
           />
         )}
       </div>
