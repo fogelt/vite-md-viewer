@@ -44,7 +44,7 @@ export const Canvas = ({
         {split && (
           <MarkdownView
             content={value}
-            className={`${surface} h-full w-1/2 overflow-auto p-4`}
+            className={`${surface} h-full w-1/2 pt-20 overflow-auto p-4`}
           />
         )}
       </div>
